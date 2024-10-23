@@ -1,9 +1,12 @@
+using API_Manga_ecommerce;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSqlServer<DatabaseContext>(builder.Configuration.GetConnectionString("mangaBd"));
 
 var app = builder.Build();
 
