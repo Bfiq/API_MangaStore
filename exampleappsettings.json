@@ -1,0 +1,13 @@
+{
+    "Logging": {
+      "LogLevel": {
+        "Default": "Information",
+        "Microsoft.AspNetCore": "Warning"
+      }
+    },
+    "ConnectionStrings" : {
+      "mangaBd": "Cadena de conexión a la base de datos"
+    }
+    
+  }
+  
