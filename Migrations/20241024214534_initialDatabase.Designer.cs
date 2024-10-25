@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_Manga_ecommerce.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241023212140_initialMigrations")]
-    partial class initialMigrations
+    [Migration("20241024214534_initialDatabase")]
+    partial class initialDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,18 @@ namespace API_Manga_ecommerce.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Category", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            Name = "Mangas Fisicos"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            Name = "Mangas Virtuales"
+                        });
                 });
 
             modelBuilder.Entity("API_Manga_ecommerce.Models.Order", b =>
@@ -108,7 +120,10 @@ namespace API_Manga_ecommerce.Migrations
             modelBuilder.Entity("API_Manga_ecommerce.Models.Payment", b =>
                 {
                     b.Property<int>("PaymentId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
 
                     b.Property<decimal?>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -127,13 +142,18 @@ namespace API_Manga_ecommerce.Migrations
 
                     b.HasKey("PaymentId");
 
+                    b.HasIndex("OrderId");
+
                     b.ToTable("Payment", (string)null);
                 });
 
             modelBuilder.Entity("API_Manga_ecommerce.Models.Product", b =>
                 {
                     b.Property<int>("ProductId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -156,6 +176,8 @@ namespace API_Manga_ecommerce.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProductId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Product", (string)null);
                 });
@@ -225,7 +247,7 @@ namespace API_Manga_ecommerce.Migrations
                 {
                     b.HasOne("API_Manga_ecommerce.Models.Order", "Order")
                         .WithMany("Payments")
-                        .HasForeignKey("PaymentId")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -236,7 +258,7 @@ namespace API_Manga_ecommerce.Migrations
                 {
                     b.HasOne("API_Manga_ecommerce.Models.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

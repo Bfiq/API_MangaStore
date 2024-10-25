@@ -1,12 +1,21 @@
 using API_Manga_ecommerce;
+using API_Manga_ecommerce.Repositories.Categories;
+using API_Manga_ecommerce.Services.Categories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSqlServer<DatabaseContext>(builder.Configuration.GetConnectionString("mangaBd"));
+
+//Repositorios
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+//Servicios
+builder.Services.AddScoped<ICategoryServices, CategoryService>();
 
 var app = builder.Build();
 
@@ -18,6 +27,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthorization();
 
-
+app.MapControllers();
 app.Run();

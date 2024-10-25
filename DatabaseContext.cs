@@ -27,13 +27,15 @@ public class DatabaseContext: DbContext
             categoryTable.HasKey(t => t.CategoryId);
             categoryTable.Property(t => t.Name).IsRequired().HasMaxLength(100);
             categoryTable.Property(t => t.Description);
+
+            categoryTable.HasData(categories);
         });
 
         modelBuilder.Entity<Product>(productTable =>
         {
             productTable.ToTable("Product");
             productTable.HasKey(t=>t.ProductId);
-            productTable.HasOne(t => t.Category).WithMany(t => t.Products).HasForeignKey(t=>t.ProductId);
+            productTable.HasOne(t => t.Category).WithMany(t => t.Products).HasForeignKey(t=>t.CategoryId);
             productTable.Property(t => t.Name).IsRequired();
             productTable.Property(t => t.Description).IsRequired(false);
             productTable.Property(t => t.Price).IsRequired();
@@ -76,7 +78,7 @@ public class DatabaseContext: DbContext
         {
             paymentTable.ToTable("Payment");
             paymentTable.HasKey(t => t.PaymentId);
-            paymentTable.HasOne(t => t.Order).WithMany(t => t.Payments).HasForeignKey(t => t.PaymentId);
+            paymentTable.HasOne(t => t.Order).WithMany(t => t.Payments).HasForeignKey(t => t.OrderId);
             paymentTable.Property(t => t.Status).IsRequired(false);
             paymentTable.Property(t => t.Amount).IsRequired(false);
             paymentTable.Property(t => t.CreatedAt);
