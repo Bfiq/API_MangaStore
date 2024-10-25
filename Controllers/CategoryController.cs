@@ -37,13 +37,13 @@ public class CategoryController: ControllerBase
     {
         try
         {
+            await _categoryServices.CheckIfCategoryExists(id);
             var category = await _categoryServices.GetCategoryById(id);
-
-            if (category == null)
-            {
-                return NotFound($"No se encontro la categoria con el id {id}");
-            }
             return Ok(category);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch (Exception ex)
         {
@@ -76,27 +76,24 @@ public class CategoryController: ControllerBase
     {
         try
         {
-            var currentCategory = await _categoryServices.GetCategoryById(id);
-
-            if (currentCategory == null)
-            {
-                return NotFound($"No se encontro la categoria con el id {id}");
-            }
+            //Validar objeto de entrada
+            await _categoryServices.CheckIfCategoryExists(id);
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            currentCategory.Name = categoryPutDto.Name;
-            currentCategory.Description = categoryPutDto.Description;
-
-            await _categoryServices.UpdateCategory(currentCategory, id);
+            await _categoryServices.UpdateCategory(categoryPutDto, id);
             return Ok();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch(Exception ex)
         {
-            return StatusCode(500, "Error al actualizar las categoria");
+            return StatusCode(500, "Error al actualizar la categoria");
         }
     }
 
@@ -110,29 +107,18 @@ public class CategoryController: ControllerBase
                 return BadRequest("El objeto de entrada no puede ser nulo.");
             }
 
-            var category = await _categoryServices.GetCategoryById(id);
+            await _categoryServices.CheckIfCategoryExists(id);
 
-            if (category == null)
-            {
-                return NotFound($"No se encontro la categoria con el id {id}");
-            }
-
-            if (!string.IsNullOrWhiteSpace(categoryPatchDto.Name))
-            {
-                category.Name = categoryPatchDto.Name;
-            }
-
-            if (!string.IsNullOrWhiteSpace(categoryPatchDto.Description))
-            {
-                category.Description = categoryPatchDto.Description;
-            }
-
-            await _categoryServices.UpdateCategory(category, id);
+            await _categoryServices.PartialUpdateCategory(categoryPatchDto, id);
             return Ok();
+        }
+        catch(KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch (Exception ex)
         {
-            return StatusCode(500, "Error al actualizar las categoria");
+            return StatusCode(500, "Error al actualizar la categoria");
         }
     }
 
@@ -141,14 +127,13 @@ public class CategoryController: ControllerBase
     {
         try
         {
-            var category = await _categoryServices.GetCategoryById(id);
-
-            if (category == null)
-            {
-                return NotFound($"No se encontro la categoria con el id {id}");
-            }
+            await _categoryServices.CheckIfCategoryExists(id);
             await _categoryServices.DeleteCategory(id);
             return NoContent();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch(Exception ex)
         {
