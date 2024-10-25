@@ -12,7 +12,7 @@ public class Product
     public required int Quantity { get; set; }
     public string? Url { get; set; }
     public required int CategoryId { get; set; }
-    public virtual Category Category{ get; set; }
+    public virtual Category? Category{ get; set; }
     [JsonIgnore]
-    public virtual ICollection<OrderDetails> OrderDetails { get; set; }
+    public virtual ICollection<OrderDetails>? OrderDetails { get; set; }
 }
