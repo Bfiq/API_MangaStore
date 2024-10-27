@@ -1,8 +1,10 @@
 using API_Manga_ecommerce;
 using API_Manga_ecommerce.Repositories.Categories;
 using API_Manga_ecommerce.Repositories.Products;
+using API_Manga_ecommerce.Repositories.Users;
 using API_Manga_ecommerce.Services.Categories;
 using API_Manga_ecommerce.Services.Products;
+using API_Manga_ecommerce.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,10 +18,12 @@ builder.Services.AddSqlServer<DatabaseContext>(builder.Configuration.GetConnecti
 //Repositorios
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepostitory>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //Servicios
 builder.Services.AddScoped<ICategoryServices, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
