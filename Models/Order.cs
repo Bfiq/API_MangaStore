@@ -9,11 +9,11 @@ public class Order
     public required DateTime OrderDate { get; set; }
     public decimal TotalAmount { get; set; }
     public required OrderStatus OrderStatus { get; set; }
-    public virtual User User { get; set; }
+    public virtual User? User { get; set; }
     [JsonIgnore]
-    public virtual ICollection<OrderDetails> OrderDetails { get; set; }
+    public virtual ICollection<OrderDetails>? OrderDetails { get; set; }
     [JsonIgnore]
-    public virtual ICollection<Payment> Payments { get; set; }
+    public virtual ICollection<Payment>? Payments { get; set; }
 
 }
 
