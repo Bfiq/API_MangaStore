@@ -13,3 +13,18 @@ public class EmailAlreadyExistsException : Exception
     {
     }
 }
+
+//Auth
+public class EmailDoesNotExistException : Exception
+{
+    public EmailDoesNotExistException(string message) : base(message)
+    {
+    }
+}
+
+public class IncorrectPasswordException : Exception
+{
+    public IncorrectPasswordException(string message) : base(message)
+    {
+    }
+}

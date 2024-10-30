@@ -1,6 +1,7 @@
 ﻿using API_Manga_ecommerce.DTOs.OrdersDetails;
 using API_Manga_ecommerce.Models;
 using API_Manga_ecommerce.Services.OrdersDetails;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_Manga_ecommerce.Controllers;
@@ -16,6 +17,7 @@ public class OrderDeatailsController: ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Get()
     {
         try
@@ -28,7 +30,10 @@ public class OrderDeatailsController: ControllerBase
         }
     }
 
+    //Buscar ordenes por usuario
+
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         try
@@ -47,6 +52,7 @@ public class OrderDeatailsController: ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Post([FromBody] OrderDetails orderDetails)
     {
         try
@@ -62,6 +68,7 @@ public class OrderDeatailsController: ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Put([FromBody] OrderDetails orderDetails, int id)
     {
         try
@@ -82,6 +89,7 @@ public class OrderDeatailsController: ControllerBase
     }
 
     [HttpPatch("{id}")]
+    [Authorize]
     public async Task<IActionResult> Patch([FromBody] OrderDetailsPatchDto orderDetailsPatchDto, int id)
     {
         try
@@ -102,6 +110,7 @@ public class OrderDeatailsController: ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Delete(int id)
     {
         try

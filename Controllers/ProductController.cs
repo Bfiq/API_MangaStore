@@ -1,6 +1,7 @@
 ﻿using API_Manga_ecommerce.DTOs.Products;
 using API_Manga_ecommerce.Models;
 using API_Manga_ecommerce.Services.Products;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ public class ProductController: ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> Get()
     {
         try
@@ -30,6 +32,7 @@ public class ProductController: ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         try
@@ -48,6 +51,7 @@ public class ProductController: ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Post([FromBody] Product product)
     {
         try
@@ -63,6 +67,7 @@ public class ProductController: ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Put([FromBody] ProductPutDto productPutDto, int id)
     {
         try
@@ -83,6 +88,7 @@ public class ProductController: ControllerBase
     }
 
     [HttpPatch("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Patch([FromBody] ProductPatchDto productPatchDto, int id)
     {
         try
@@ -102,6 +108,7 @@ public class ProductController: ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Delete(int id)
     {
         try

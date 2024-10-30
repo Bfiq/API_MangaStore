@@ -3,6 +3,7 @@ using API_Manga_ecommerce.DTOs.Users;
 using API_Manga_ecommerce.Exceptions;
 using API_Manga_ecommerce.Models;
 using API_Manga_ecommerce.Services.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_Manga_ecommerce.Controllers;
@@ -15,6 +16,7 @@ public class UserController:ControllerBase
     public UserController(IUserService userService) {  _userService = userService; }
 
     [HttpGet]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Get()
     {
         try
@@ -28,6 +30,7 @@ public class UserController:ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         try
@@ -69,6 +72,7 @@ public class UserController:ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> Put([FromBody] UserPutDto userPutDto, int id)
     {
         try
@@ -97,6 +101,7 @@ public class UserController:ControllerBase
     }
 
     [HttpPatch("{id}")]
+    [Authorize]
     public async Task<IActionResult> Patch([FromBody] UserPatchDto userPatchDto, int id)
     {
         try
@@ -125,6 +130,7 @@ public class UserController:ControllerBase
     }
 
     [HttpPatch("{id}/password")]
+    [Authorize]
     public async Task<IActionResult> PatchPassword([FromBody] UserPasswordDto userPasswordDto, int id)
     {
         try
@@ -145,6 +151,7 @@ public class UserController:ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Delete(int id)
     {
         try

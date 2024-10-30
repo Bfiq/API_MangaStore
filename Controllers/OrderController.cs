@@ -1,6 +1,7 @@
 ﻿using API_Manga_ecommerce.DTOs.Orders;
 using API_Manga_ecommerce.Models;
 using API_Manga_ecommerce.Services.Orders;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata.Ecma335;
 
@@ -17,6 +18,7 @@ public class OrderController:ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> Get()
     {
         try
@@ -30,6 +32,7 @@ public class OrderController:ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         try
@@ -48,6 +51,7 @@ public class OrderController:ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Post([FromBody] Order order)
     {
         try
@@ -63,6 +67,7 @@ public class OrderController:ControllerBase
     }
 
     [HttpPatch("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Patch([FromBody] OrderPatchDto orderPatchDto, int id)
     {
         try

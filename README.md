@@ -51,5 +51,4 @@ dotnet run
 - `Program.cs`: Punto de entrada de la aplicación, donde se configuran los servicios e inicia el servidor de la API.
 
 ## Proximas Mejoras
-- Implementación de JWT para autenticación.
 - Integración del servicio de pagos.

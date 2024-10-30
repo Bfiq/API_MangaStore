@@ -2,6 +2,7 @@
 using API_Manga_ecommerce.DTOs.Categories;
 using API_Manga_ecommerce.Models;
 using API_Manga_ecommerce.Services.Categories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
@@ -19,6 +20,7 @@ public class CategoryController: ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> Get()
     {
         try
@@ -33,6 +35,7 @@ public class CategoryController: ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         try
@@ -53,6 +56,7 @@ public class CategoryController: ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Post([FromBody] Category category)
     {
         try
@@ -72,6 +76,7 @@ public class CategoryController: ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult> Put([FromBody] CategoryPutDto categoryPutDto, int id)
     {
         try
@@ -98,6 +103,7 @@ public class CategoryController: ControllerBase
     }
 
     [HttpPatch("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Patch([FromBody] CategoryPatchDto categoryPatchDto, int id)
     {
         try
@@ -123,6 +129,7 @@ public class CategoryController: ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Delete(int id)
     {
         try
