@@ -4,16 +4,20 @@ using API_Manga_ecommerce.Models;
 using API_Manga_ecommerce.Repositories.Users;
 using BCrypt.Net;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace API_Manga_ecommerce.Services.Users;
 
 public class UserService:IUserService
 {
     private IUserRepository _userRepository;
+    private readonly IHttpContextAccessor _contextAccessor;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, IHttpContextAccessor contextAccessor)
     {
         _userRepository = userRepository;
+        _contextAccessor = contextAccessor;
     }
 
     //Get All
@@ -34,13 +38,16 @@ public class UserService:IUserService
         if (!new EmailAddressAttribute().IsValid(userPostDto.Email)) throw new InvalidEmailFormatException("El formato del correo electrónico no es válido.");
         if (await _userRepository.ValidateEmail(userPostDto.Email)) throw new EmailAlreadyExistsException("El correo electrónico ya está en uso.");
 
+        var currentUser = GetCurrentUser(); //Verificando el usuario actual
+        var role = (currentUser != null && currentUser.Role == Role.Administrator) ? userPostDto.Role : Role.Customer;
+
         userPostDto.Password = BCrypt.Net.BCrypt.HashPassword(userPostDto.Password);
         var user = new User
         {
             Name = userPostDto.Name,
             Email = userPostDto.Email,
             Password = userPostDto.Password,
-            Role = userPostDto.Role
+            Role = role
         };
         if (!string.IsNullOrWhiteSpace(userPostDto.shippingAddress)) user.shippingAddress = userPostDto.shippingAddress;
         await _userRepository.SaveUser(user);
@@ -112,5 +119,30 @@ public class UserService:IUserService
     public async Task CheckIfUserExists(int id)
     {
         _ = await _userRepository.GetUserById(id) ?? throw new KeyNotFoundException($"No se encontro el usuario con el id {id}");
+    }
+
+    //GetCurrentUser
+    private CurrentUserDto? GetCurrentUser()
+    {
+        var identity = _contextAccessor.HttpContext?.User.Identity as ClaimsIdentity;
+
+        if (identity == null || !identity.IsAuthenticated)
+        {
+            return null;
+        }
+
+        var userIdClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
+        var roleClaim = identity.FindFirst(ClaimTypes.Role);
+
+        if (userIdClaim == null || roleClaim == null)
+        {
+            return null;
+        }
+
+        return new CurrentUserDto
+        {
+            UserId = int.Parse(userIdClaim.Value),
+            Role = Enum.Parse<Role>(roleClaim.Value)
+        };
     }
 }

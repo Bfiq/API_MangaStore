@@ -18,5 +18,6 @@ public class User
 public enum Role
 {
     Administrator,
+    Seller,
     Customer
 }
