@@ -10,6 +10,7 @@ public class Product
     public string? Description { get; set; }
     public decimal? Price { get; set; }
     public required int Quantity { get; set; }
+    public required bool IsDigital { get; set; }
     public string? Url { get; set; }
     public required int CategoryId { get; set; }
     public virtual Category? Category{ get; set; }

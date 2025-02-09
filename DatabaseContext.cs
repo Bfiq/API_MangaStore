@@ -17,9 +17,6 @@ public class DatabaseContext: DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        List<Category> categories = new List<Category>();
-        categories.Add(new Category { CategoryId=1, Name="Mangas Fisicos"});
-        categories.Add(new Category { CategoryId = 2, Name = "Mangas Virtuales" });
 
         modelBuilder.Entity<Category>(categoryTable =>
         {
@@ -27,8 +24,6 @@ public class DatabaseContext: DbContext
             categoryTable.HasKey(t => t.CategoryId);
             categoryTable.Property(t => t.Name).IsRequired().HasMaxLength(100);
             categoryTable.Property(t => t.Description);
-
-            categoryTable.HasData(categories);
         });
 
         modelBuilder.Entity<Product>(productTable =>
@@ -40,6 +35,7 @@ public class DatabaseContext: DbContext
             productTable.Property(t => t.Description).IsRequired(false);
             productTable.Property(t => t.Price).IsRequired();
             productTable.Property(t => t.Quantity).IsRequired();
+            productTable.Property(t => t.IsDigital).IsRequired();
             productTable.Property(t => t.Url).IsRequired(false);
         });
 

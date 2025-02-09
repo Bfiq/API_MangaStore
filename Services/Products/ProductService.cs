@@ -42,6 +42,7 @@ namespace API_Manga_ecommerce.Services.Products
             currentProduct!.Quantity = productPutDto.Quantity;
             currentProduct!.Url = productPutDto.Url;
             currentProduct!.CategoryId = productPutDto.CategoryId;
+            currentProduct!.IsDigital = productPutDto.isDigital;
 
             await _productRepository.UpdateProduct(currentProduct, id);
         }

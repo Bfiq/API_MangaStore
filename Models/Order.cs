@@ -9,6 +9,7 @@ public class Order
     public required DateTime OrderDate { get; set; }
     public decimal TotalAmount { get; set; }
     public required OrderStatus OrderStatus { get; set; }
+    public string OrderStatusName => OrderStatus.ToString();
     public virtual User? User { get; set; }
     [JsonIgnore]
     public virtual ICollection<OrderDetails>? OrderDetails { get; set; }
@@ -19,7 +20,9 @@ public class Order
 
 public enum OrderStatus
 {
-    InProggress,
-    SentTo,
-    Received
+    Pending, //pedido creado
+    InProgress, // confirmado y preparación de pedido
+    Shipped, // Enviado
+    Delivered, //Entregado
+    Cancelled //Cancelado
 }

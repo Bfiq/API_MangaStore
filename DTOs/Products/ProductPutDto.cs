@@ -9,6 +9,7 @@ public class ProductPutDto
     public required string Description { get; set; }
     public required decimal Price { get; set; }
     public required int Quantity { get; set; }
+    public required bool isDigital { get; set; }
     public required string Url { get; set; }
     public required int CategoryId { get; set; }
 }
